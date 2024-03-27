@@ -1,0 +1,32 @@
+/*All https? links will open in new tab; add icon for indication*/
+a[href^="http"]::after{
+  content: " ⧉";
+}
+
+/* adapted from: https://codemyui.com/css-only-candy-cane-text-animation/ */
+.stripy-text {
+  --color1: #69ffb9;
+  --color2: #76ecfb;
+  --color3: #9386e6;
+  --color4: #f298f4;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color1),
+    var(--color3) 30px,
+    var(--color2) 30px,
+    var(--color4) 60px
+  );
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  animation: 80s linear 0s infinite move;
+}
+
+@keyframes move {
+  from {
+    background-position: 0px;
+  }
+  to {
+    background-position: 1000px;
+  }
+}
