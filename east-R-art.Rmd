@@ -68,7 +68,7 @@ my_diamond <- data.frame(carat = 5, price = 5000)
 
 ggplot() +
   geom_point(data = diamonds, aes(x = carat, y = price)) +
-  geom_point(data = my_diamond, aes(x = carat, y = price), color = "#ff8800") +
+  geom_point(data = my_diamond, aes(x = carat, y = price), color = "#ff8200") +
   theme_void()
 ```
 
@@ -321,7 +321,7 @@ for (i in 1:n_xs) {
     x <- xs[i]
     y <- ys[j]
 
-    egg <- rotated_egg_pts(xs[i], ys[j], rotate_degrees = -90)
+    egg <- rotated_egg_pts(x, y, rotate_degrees = -90)
 
     eggs[[egg_num]] <- egg
     egg_num <- egg_num + 1
@@ -366,7 +366,7 @@ for (i in 1:n_xs) {
     x <- xs[i]
     y <- ys[j]
 
-    egg <- rotated_egg_pts(xs[i], ys[j], rotate_degrees = -90)
+    egg <- rotated_egg_pts(x, y, rotate_degrees = -90)
 
     # Pick a random color and save
     color <- sample(palette, 1)
@@ -431,7 +431,7 @@ for (i in 1:n_xs) {
 
     # Randomize rotation
     rotate <- rnorm(1, mean = -90, sd = 10)
-    egg <- rotated_egg_pts(xs[i], ys[j], rotate_degrees = rotate)
+    egg <- rotated_egg_pts(x, y, rotate_degrees = rotate)
 
     # Pick a random color and save
     color <- sample(palette, 1)
@@ -465,7 +465,7 @@ for (i in 1:n_xs) {
     # Randomize rotation
     rotate_sd <- abs(y) * 2
     rotate <- rnorm(1, mean = -90, sd = rotate_sd)
-    egg <- rotated_egg_pts(xs[i], ys[j], rotate_degrees = rotate)
+    egg <- rotated_egg_pts(x, y, rotate_degrees = rotate)
 
     # Pick a random color and save
     color <- sample(palette, 1)
@@ -484,6 +484,45 @@ You could have this randomness be a little less random...
 One way to end up with some nice organic feeling randomness is to use "noise".  In particular, "Perlin noise" is used often. This noise has been used to generate terrain in video game, simulate trees moving in the wind, or we can use it to rotate our eggs!
 
 ```{r}
+xs <- -10:15 * 1.5
+ys <- -10:15 * 2
+
+n_xs <- length(xs)
+n_ys <- length(ys)
+
+# Generate the values that will rotate the eggs
+noise <- noise_perlin(c(n_xs, n_ys), frequency = 0.1)
+
+eggs <- list()
+
+egg_num <- 1 # keep track of how many eggs we've made
+for (i in 1:n_xs) {
+  for (j in 1:n_ys) {
+    x <- xs[i]
+    y <- ys[j]
+
+    # Randomize rotation
+    # (1) pulling noise value, (2) scaling it up, &(3) centering at 90,
+    rotate <- -90 + noise[i, j] * 120
+    egg <- rotated_egg_pts(x, y, rotate_degrees = rotate)
+
+    # Pick a random color and save
+    color <- sample(palette, 1)
+    egg$color <- color
+
+    eggs[[egg_num]] <- egg
+    egg_num <- egg_num + 1
+  }
+}
+
+plot_eggs(eggs)
+```
+
+Go vols!
+
+```{r}
+palette <- c("#ff8200", "#58595b", "#58595b", "#58595b", "#58595b")
+
 xs <- -10:15 * 1.5
 ys <- -10:15 * 2
 
