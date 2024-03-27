@@ -151,7 +151,7 @@ ggplot(pts, aes(x = x, y = y)) +
 
 Holy moly we created egg.
 
-But... we prolly don't want dot eggs... instead of `geom_point()` we can use `geom_polygon` to nicely connect them.
+But... we prolly don't want dot eggs... instead of `geom_point()` we can use `geom_polygon()` to nicely connect them.
 
 ```{r}
 ggplot(pts, aes(x = x, y = y)) +
